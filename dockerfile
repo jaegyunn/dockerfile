@@ -11,6 +11,7 @@ RUN apt-get update && apt-get install -y \
     xvfb libegl1-mesa libgles2-mesa-dev \
     libosmesa6-dev \  
     python3 python3-pip \
+    tmux \
     && rm -rf /var/lib/apt/lists/* \
     && ln -s /usr/bin/python3 /usr/bin/python \
     && pip3 install --upgrade pip setuptools
