@@ -11,7 +11,6 @@ RUN apt-get update && apt-get install -y \
     xvfb libegl1-mesa libgles2-mesa-dev \
     libosmesa6-dev \  
     python3 python3-pip \
-    tmux \
     && rm -rf /var/lib/apt/lists/* \
     && ln -s /usr/bin/python3 /usr/bin/python \
     && pip3 install --upgrade pip setuptools
@@ -31,4 +30,6 @@ RUN echo "Xvfb :99 -screen 0 1024x768x24 &" >> /root/.bashrc
 RUN echo "export DISPLAY=:99" >> /root/.bashrc
 
 # 기본 실행 환경 설정
-CMD ["/bin/bash"]
+# Xvfb를 시작하고 DISPLAY를 설정한 후 bash 셸을 실행하도록 ENTRYPOINT 설정
+ENTRYPOINT ["bash", "-c", "Xvfb :99 -screen 0 1024x768x24 & export DISPLAY=:99 && exec bash"]
+
