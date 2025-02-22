@@ -9,8 +9,8 @@ fi
 
 # 입력 인자
 AGENT="$1"
-DOMAINS=($2)  # 여러 개의 도메인을 리스트로 저장
-SEEDS=($3)    # 여러 개의 시드를 리스트로 저장
+IFS=' ' read -r -a DOMAINS <<< "$2"  # 공백으로 도메인 분리
+IFS=';' read -r -a SEED_GROUPS <<< "$3"  # 세미콜론으로 시드 그룹 분리
 SNAPSHOT_TS="$4"  # 필수 입력값으로 변경
 
 # 추가적인 Hydra 인자
@@ -31,7 +31,8 @@ TASKS["quadruped"]="quadruped_walk quadruped_run quadruped_stand quadruped_jump"
 TASKS["jaco"]="jaco_reach_top_left jaco_reach_top_right jaco_reach_bottom_left jaco_reach_bottom_right"
 
 # 각 도메인별 실험 실행
-for DOMAIN in "${DOMAINS[@]}"; do
+for idx in "${!DOMAINS[@]}"; do
+    DOMAIN="${DOMAINS[$idx]}"
     DOMAIN_LOG_DIR="$LOG_DIR/finetune/$DOMAIN/$AGENT"
     mkdir -p "$DOMAIN_LOG_DIR"
 
@@ -40,6 +41,9 @@ for DOMAIN in "${DOMAINS[@]}"; do
         echo "Invalid domain: $DOMAIN"
         continue
     fi
+
+    # 해당 도메인의 시드 리스트 추출
+    IFS=' ' read -r -a SEEDS <<< "${SEED_GROUPS[$idx]}"
     
     for SEED in "${SEEDS[@]}"; do
         for TASK in ${TASKS[$DOMAIN]}; do
