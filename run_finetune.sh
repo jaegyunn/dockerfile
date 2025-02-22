@@ -3,14 +3,14 @@
 # 사용법 체크
 if [ "$#" -lt 3 ]; then
     echo "Usage: $0 <agent> <domains> <seeds>"
-    echo "Example: $0 sbrl 'walker quadruped' '1 2 3'"
+    echo "Example: $0 sbrl 'walker quadruped' '1 2 3;4 5 6'"
     exit 1
 fi
 
 # 입력 인자
 AGENT="$1"
-DOMAINS=($2)  # 여러 개의 도메인을 리스트로 저장
-SEEDS=($3)    # 여러 개의 시드를 리스트로 저장
+IFS=' ' read -r -a DOMAINS <<< "$2"  # 공백으로 도메인 분리
+IFS=';' read -r -a SEED_GROUPS <<< "$3"  # 세미콜론으로 시드 그룹 분리
 
 # 현재 디렉토리를 실험 디렉토리로 설정
 EXPERIMENT_DIR=$(pwd)
@@ -24,21 +24,25 @@ mkdir -p "$LOG_DIR"
 declare -A TASKS
 TASKS["walker"]="walker_run walker_flip walker_stand walker_walk"
 TASKS["quadruped"]="quadruped_walk quadruped_run quadruped_stand quadruped_jump"
-TASKS["jaco"]="reach_top_left reach_top_right reach_bottom_left reach_bottom_right"
+TASKS["jaco"]="jaco_reach_top_left jaco_reach_top_right jaco_reach_bottom_left jaco_reach_bottom_right"
 
 # 각 도메인별 실험 실행
-for DOMAIN in "${DOMAINS[@]}"; do
+for idx in "${!DOMAINS[@]}"; do
+    DOMAIN="${DOMAINS[$idx]}"
     DOMAIN_LOG_DIR="$LOG_DIR/finetune/$DOMAIN/$AGENT"
     mkdir -p "$DOMAIN_LOG_DIR"
 
-    # 선택한 도메인의 task 목록 가져오기
+    # 도메인의 task 목록 가져오기
     if [[ -z "${TASKS[$DOMAIN]}" ]]; then
         echo "Invalid domain: $DOMAIN"
         continue
     fi
 
-    for TASK in ${TASKS[$DOMAIN]}; do
-        for SEED in "${SEEDS[@]}"; do
+    # 해당 도메인의 시드 리스트 추출
+    IFS=' ' read -r -a SEEDS <<< "${SEED_GROUPS[$idx]}"
+
+    for SEED in "${SEEDS[@]}"; do
+        for TASK in ${TASKS[$DOMAIN]}; do
             # 기존 로그 파일 확인 후 index 결정 (중복 방지)
             INDEX=1
             while [[ -e "$DOMAIN_LOG_DIR/finetune_${AGENT}_seed_${SEED}_${TASK}_${INDEX}.out" ]]; do
@@ -50,7 +54,7 @@ for DOMAIN in "${DOMAINS[@]}"; do
             ERR_LOG="$DOMAIN_LOG_DIR/finetune_${AGENT}_seed_${SEED}_${TASK}_${INDEX}.err"
 
             # 실행 명령어
-            CMD="HYDRA_FULL_ERROR=1 python $EXPERIMENT_DIR/finetune.py domain=$DOMAIN task=$TASK obs_type=states agent=$AGENT reward_free=false seed=$SEED snapshot_ts=$SNAPSHOT_TS"
+            CMD="HYDRA_FULL_ERROR=1 python $EXPERIMENT_DIR/finetune.py domain=$DOMAIN task=$TASK obs_type=states agent=$AGENT reward_free=false pretrain_seed=$SEED snapshot_ts=$SNAPSHOT_TS"
 
             echo "Starting experiment: $CMD"
             eval "$CMD" > "$OUT_LOG" 2> "$ERR_LOG"
