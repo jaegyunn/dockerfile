@@ -407,8 +407,12 @@ if __name__ == '__main__':
 		result_fname = args.xpid
 	result_fname = f"{result_fname}-{args.model_tar}-{args.model_name}"
 	result_fpath = os.path.join(args.result_path, result_fname)
-	if os.path.exists(f'{result_fpath}.csv'):
-		result_fpath = os.path.join(args.result_path, f'{result_fname}_redo')
+	if args.benchmark is not None:
+		result_fpath = f"{result_fname}-{args.benchmark}"
+	count = 1
+	while os.path.exists(f'{result_fpath}.csv'):
+		result_fpath = os.path.join(args.result_path, f'{result_fname}_{count}')
+		count += 1
 	result_fpath = f'{result_fpath}.csv'
 
 	csvout = open(result_fpath, 'w', newline='')
