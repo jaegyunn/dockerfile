@@ -1,0 +1,39 @@
+# ICM_APT
+python finetune.py agent=icm_apt domain=walker task=walker_stand obs_type=states reward_free=false pretrain_seed=77 snapshot_ts=2000000 
+python finetune.py agent=icm_apt domain=walker task=walker_walk obs_type=states reward_free=false pretrain_seed=77 snapshot_ts=2000000 
+python finetune.py agent=icm_apt domain=walker task=walker_run obs_type=states reward_free=false pretrain_seed=77 snapshot_ts=2000000 
+python finetune.py agent=icm_apt domain=walker task=walker_flip obs_type=states reward_free=false pretrain_seed=77 snapshot_ts=2000000
+
+python finetune.py agent=icm_apt domain=quadruped task=quadruped_walk obs_type=states reward_free=false pretrain_seed=1586 snapshot_ts=2000000
+python finetune.py agent=icm_apt domain=quadruped task=quadruped_run obs_type=states reward_free=false pretrain_seed=1586 snapshot_ts=2000000
+python finetune.py agent=icm_apt domain=quadruped task=quadruped_stand obs_type=states reward_free=false pretrain_seed=1586 snapshot_ts=2000000
+python finetune.py agent=icm_apt domain=quadruped task=quadruped_flip obs_type=states reward_free=false pretrain_seed=1586 snapshot_ts=2000000
+
+python finetune.py agent=icm_apt domain=quadruped task=quadruped_walk obs_type=states reward_free=false pretrain_seed=2436 snapshot_ts=2000000
+python finetune.py agent=icm_apt domain=quadruped task=quadruped_run obs_type=states reward_free=false pretrain_seed=2436 snapshot_ts=2000000
+python finetune.py agent=icm_apt domain=quadruped task=quadruped_stand obs_type=states reward_free=false pretrain_seed=2436 snapshot_ts=2000000
+python finetune.py agent=icm_apt domain=quadruped task=quadruped_flip obs_type=states reward_free=false pretrain_seed=2436 snapshot_ts=2000000
+
+python finetune.py agent=icm_apt domain=quadruped task=quadruped_walk obs_type=states reward_free=false pretrain_seed=3128 snapshot_ts=2000000
+python finetune.py agent=icm_apt domain=quadruped task=quadruped_run obs_type=states reward_free=false pretrain_seed=3128 snapshot_ts=2000000
+python finetune.py agent=icm_apt domain=quadruped task=quadruped_stand obs_type=states reward_free=false pretrain_seed=3128 snapshot_ts=2000000
+python finetune.py agent=icm_apt domain=quadruped task=quadruped_flip obs_type=states reward_free=false pretrain_seed=3128 snapshot_ts=2000000
+
+python finetune.py agent=icm_apt domain=jaco task=jaco_reach_top_left obs_type=states reward_free=false pretrain_seed=843 snapshot_ts=2000000
+python finetune.py agent=icm_apt domain=jaco task=jaco_reach_top_right obs_type=states reward_free=false pretrain_seed=843 snapshot_ts=2000000
+python finetune.py agent=icm_apt domain=jaco task=jaco_reach_bottom_left obs_type=states reward_free=false pretrain_seed=843 snapshot_ts=2000000
+python finetune.py agent=icm_apt domain=jaco task=jaco_reach_bottom_right obs_type=states reward_free=false pretrain_seed=843 snapshot_ts=2000000
+
+python finetune.py agent=icm_apt domain=jaco task=jaco_reach_top_left obs_type=states reward_free=false pretrain_seed=2037 snapshot_ts=2000000
+python finetune.py agent=icm_apt domain=jaco task=jaco_reach_top_right obs_type=states reward_free=false pretrain_seed=2037 snapshot_ts=2000000
+python finetune.py agent=icm_apt domain=jaco task=jaco_reach_bottom_left obs_type=states reward_free=false pretrain_seed=2037 snapshot_ts=2000000
+python finetune.py agent=icm_apt domain=jaco task=jaco_reach_bottom_right obs_type=states reward_free=false pretrain_seed=2037 snapshot_ts=2000000
+
+python finetune.py agent=icm_apt domain=jaco task=jaco_reach_top_left obs_type=states reward_free=false pretrain_seed=2326 snapshot_ts=2000000
+python finetune.py agent=icm_apt domain=jaco task=jaco_reach_top_right obs_type=states reward_free=false pretrain_seed=2326 snapshot_ts=2000000
+python finetune.py agent=icm_apt domain=jaco task=jaco_reach_bottom_left obs_type=states reward_free=false pretrain_seed=2326 snapshot_ts=2000000
+python finetune.py agent=icm_apt domain=jaco task=jaco_reach_bottom_right obs_type=states reward_free=false pretrain_seed=2326 snapshot_ts=2000000
+
+python pretrain.py agent=icm_apt domain=walker seed=42
+python pretrain.py agent=icm_apt domain=quadruped seed=9896
+python pretrain.py agent=icm_apt domain=jaco seed=2082
